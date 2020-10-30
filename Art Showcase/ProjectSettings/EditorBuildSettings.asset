@@ -18,8 +18,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Game_Introduction.unity
     guid: 44178821976fce64f9733300675d468d
   - enabled: 1
-    path: Assets/Scenes/Game_Level1.unity
-    guid: 308bd7a7b2f679e478ba9496649ad564
+    path: Assets/Scenes/Game_Showcase.unity
+    guid: 319a3bb81602d3a4ba550ff404eab33c
   - enabled: 1
     path: Assets/Scenes/Game_Endscreen.unity
     guid: 4b17cdb86c5202c4cb4e02712fe2f454
