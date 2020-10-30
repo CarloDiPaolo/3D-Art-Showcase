@@ -7,6 +7,8 @@ public class CameraBehaviour : Singleton<CameraBehaviour>
     private Camera cam = null;
     private Animator anim = null;
 
+    public Animator Anim { get => anim; private set => anim = value; }
+
     private void Start()
     {
         cam = this.GetComponent<Camera>();
