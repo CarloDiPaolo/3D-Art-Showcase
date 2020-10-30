@@ -20,7 +20,7 @@ public class ColorPickerSimple : MonoBehaviour
         SetColor();
     }
 
-    public void Init(float windowPosition, Renderer target)
+    public void Init(Vector2 windowPosition, Renderer target)
     {
         targetObject = target;
     }
