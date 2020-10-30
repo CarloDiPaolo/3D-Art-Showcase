@@ -3530,7 +3530,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuParent: {fileID: 1258612787}
   characterObject: {fileID: 183080939}
-  colorPicker: {fileID: 0}
+  colorPicker: {fileID: 1055761415}
 --- !u!114 &1204657594
 MonoBehaviour:
   m_ObjectHideFlags: 0
