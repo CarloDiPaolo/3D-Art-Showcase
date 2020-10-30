@@ -5,6 +5,7 @@ using UnityEngine;
 public class ShowcaseMenu : MonoBehaviour
 {
     [SerializeField] GameObject menuParent;
+    [SerializeField] GameObject characterObject;
 
     private bool open = true;
     private float delay = 0f;
@@ -55,5 +56,18 @@ public class ShowcaseMenu : MonoBehaviour
     private void ToggleMenuVisibility()
     {
         menuParent.SetActive(!menuParent.activeInHierarchy);
+    }
+
+    public void RandomizeColor()
+    {
+        Renderer rend = characterObject.GetComponent<Renderer>();
+        Material mat = rend.material;
+        mat.color = Color.HSVToRGB(Random.value,1,1);
+        rend.material = mat;
+    }
+
+    public void RandomizeRotation()
+    {
+        characterObject.transform.rotation = Quaternion.Euler(new Vector3(characterObject.transform.rotation.eulerAngles.x, Random.Range(0, 360), characterObject.transform.rotation.eulerAngles.z));
     }
 }
