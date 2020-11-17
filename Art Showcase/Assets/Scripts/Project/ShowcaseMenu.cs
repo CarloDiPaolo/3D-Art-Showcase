@@ -6,7 +6,6 @@ public class ShowcaseMenu : MonoBehaviour
 {
     [SerializeField] GameObject menuParent;
     [SerializeField] GameObject characterObject;
-    [SerializeField] ColorPickerSimple colorPicker;
 
     private bool open = true;
     private float delay = 0f;
@@ -57,7 +56,7 @@ public class ShowcaseMenu : MonoBehaviour
     private void ToggleMenuVisibility()
     {
         menuParent.SetActive(!menuParent.activeInHierarchy);
-        colorPicker.gameObject.SetActive(false);
+        ColorPickerSimple.Instance.Close();
     }
 
     public void RandomizeColor()
@@ -75,7 +74,6 @@ public class ShowcaseMenu : MonoBehaviour
 
     public void OpenColorPicker()
     {
-        colorPicker.gameObject.SetActive(true);
-        colorPicker.Init(Vector2.zero, characterObject.GetComponent<Renderer>());
+        ColorPickerSimple.Instance.Open(new Vector2(440f, 150f), characterObject.GetComponent<Renderer>());
     }
 }

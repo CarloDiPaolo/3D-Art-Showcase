@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ColorPickerSimple : MonoBehaviour
+public class ColorPickerSimple : Singleton<ColorPickerSimple>
 {
     [SerializeField] Image colorDisplay;
     [SerializeField] Renderer targetObject;
+    [SerializeField] List<Slider> colorSliders;
+    
+    private RectTransform uiTransform;
+    private Renderer target;
 
     private float r = 1f;
     private float g = 1f;
@@ -15,14 +19,25 @@ public class ColorPickerSimple : MonoBehaviour
 
     private Color currentColor;
 
+
     private void Start()
     {
-        SetColor();
+        uiTransform = transform.GetChild(0).GetComponent<RectTransform>();
+        Close();
     }
 
-    public void Init(Vector2 windowPosition, Renderer target)
+    public void Open(Vector2 windowPosition, Renderer target)
     {
-        targetObject = target;
+        this.target = target;
+
+        uiTransform.anchoredPosition = new Vector3(windowPosition.x, windowPosition.y, uiTransform.position.z);
+        DisplayTargetsColor();
+        uiTransform.gameObject.SetActive(true);
+    }
+
+    public void Close()
+    {
+        uiTransform.gameObject.SetActive(false);
     }
 
     public void SetR(float r)
@@ -55,7 +70,9 @@ public class ColorPickerSimple : MonoBehaviour
         colorDisplay.color = currentColor;
 
         //for Testing
-        SetColorToObject();
+        //SetColorToObject();
+
+        SetColorToTarget();
     }
 
     public Color GetPickedColor()
@@ -67,5 +84,21 @@ public class ColorPickerSimple : MonoBehaviour
     private void SetColorToObject()
     {
         targetObject.material.color = currentColor;
+    }
+
+    private void SetColorToTarget()
+    {
+        target.material.color = currentColor;
+    }
+
+    private void DisplayTargetsColor()
+    {
+        Debug.LogError("Display");
+        Color targetColor = target.material.color;
+        colorDisplay.color = targetColor;
+        colorSliders[0].value = targetColor.r;
+        colorSliders[1].value = targetColor.g;
+        colorSliders[2].value = targetColor.b;
+        colorSliders[3].value = targetColor.a;
     }
 }
