@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class DisplayGradient : MonoBehaviour
 {
+    [SerializeField] List<Button> colorButtons;
+
     public void ShowGradient(Gradient gradient)
     {
         transform.GetChild(0).gameObject.SetActive(true);
@@ -40,5 +42,17 @@ public class DisplayGradient : MonoBehaviour
             }
         }
         texture.Apply();
+    }
+
+    public void SwitchToLeft()
+    {
+        colorButtons[0].image.color = Color.red;
+        colorButtons[1].image.color = Color.white;
+    }
+
+    public void SwitchToRight()
+    {
+        colorButtons[1].image.color = Color.red;
+        colorButtons[0].image.color = Color.white;
     }
 }

@@ -22,6 +22,8 @@ public class ColorPickerSimple : Singleton<ColorPickerSimple>
     private Color currentColor;
     private ParticleSystem.ColorOverLifetimeModule colorModule;
 
+    private bool editingLeftColor = true;
+
 
     private void Start()
     {
@@ -49,6 +51,9 @@ public class ColorPickerSimple : Singleton<ColorPickerSimple>
         colorModule = particleSystemTarget.colorOverLifetime;
         Gradient gradient = colorModule.color.gradient;
         gradientDisplay.ShowGradient(gradient);
+
+        editingLeftColor = true;
+        gradientDisplay.SwitchToLeft();
     }
 
     public void Close()
@@ -115,11 +120,21 @@ public class ColorPickerSimple : Singleton<ColorPickerSimple>
             Gradient gradient = colorModule.color.gradient;
             gradient.colorKeys[0] = new GradientColorKey(Color.red, 0f);
 
-            gradient.SetKeys(
-            new GradientColorKey[] { new GradientColorKey(currentColor, 0.0f), gradient.colorKeys[1] },
-            new GradientAlphaKey[] { gradient.alphaKeys[0], gradient.alphaKeys[1] }
-            );
-
+            if(editingLeftColor)
+            {
+                gradient.SetKeys(
+                new GradientColorKey[] { new GradientColorKey(currentColor, 0.0f), gradient.colorKeys[1] },
+                new GradientAlphaKey[] { gradient.alphaKeys[0], gradient.alphaKeys[1] }
+                );
+            }
+            else
+            {
+               gradient.SetKeys(
+                new GradientColorKey[] { new GradientColorKey(gradient.colorKeys[0].color, 0.0f), new GradientColorKey(currentColor, 1f) },
+                new GradientAlphaKey[] { gradient.alphaKeys[0], gradient.alphaKeys[1] }
+                ); 
+            }
+            
             colorModule.color = new ParticleSystem.MinMaxGradient(gradient);
 
             gradientDisplay.ShowGradient(gradient);
@@ -149,5 +164,17 @@ public class ColorPickerSimple : Singleton<ColorPickerSimple>
         colorSliders[1].value = targetColor.g;
         colorSliders[2].value = targetColor.b;
         colorSliders[3].value = targetColor.a;
+    }
+
+    public void SwitchToLeft()
+    {
+        gradientDisplay.SwitchToLeft();
+        editingLeftColor = true;
+    }
+
+    public void SwitchToRight()
+    {
+        gradientDisplay.SwitchToRight();
+        editingLeftColor = false;
     }
 }
