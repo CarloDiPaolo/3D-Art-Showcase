@@ -8,6 +8,7 @@ public class ColorPickerSimple : Singleton<ColorPickerSimple>
     [SerializeField] Image colorDisplay;
     [SerializeField] Renderer targetObject;
     [SerializeField] List<Slider> colorSliders;
+    [SerializeField] DisplayGradient gradientDisplay;
     
     private RectTransform uiTransform;
     private Renderer target;
@@ -45,11 +46,15 @@ public class ColorPickerSimple : Singleton<ColorPickerSimple>
         uiTransform.anchoredPosition = new Vector3(windowPosition.x, windowPosition.y, uiTransform.position.z);
         DisplayTargetsColor();
         uiTransform.gameObject.SetActive(true);
+        colorModule = particleSystemTarget.colorOverLifetime;
+        Gradient gradient = colorModule.color.gradient;
+        gradientDisplay.ShowGradient(gradient);
     }
 
     public void Close()
     {
         uiTransform.gameObject.SetActive(false);
+        gradientDisplay.transform.GetChild(0).gameObject.SetActive(false);
     }
 
     public void SetR(float r)
@@ -116,6 +121,8 @@ public class ColorPickerSimple : Singleton<ColorPickerSimple>
             );
 
             colorModule.color = new ParticleSystem.MinMaxGradient(gradient);
+
+            gradientDisplay.ShowGradient(gradient);
         }
     }
 
@@ -133,6 +140,8 @@ public class ColorPickerSimple : Singleton<ColorPickerSimple>
             Gradient gradient = colorModule.color.gradient;
             targetColor = gradient.colorKeys[0].color;
             Debug.LogError(targetColor);
+
+            gradientDisplay.ShowGradient(gradient);
         }
 
         colorDisplay.color = targetColor;
