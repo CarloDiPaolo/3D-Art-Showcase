@@ -72,8 +72,8 @@ public class ShowcaseMenu : MonoBehaviour
         characterObject.transform.rotation = Quaternion.Euler(new Vector3(characterObject.transform.rotation.eulerAngles.x, Random.Range(0, 360), characterObject.transform.rotation.eulerAngles.z));
     }
 
-    public void OpenColorPicker()
+    public void OpenColorPicker(Renderer target)
     {
-        ColorPickerSimple.Instance.Open(new Vector2(440f, 150f), characterObject.GetComponent<Renderer>());
+        ColorPickerSimple.Instance.Open(new Vector2(440f, 150f), target);
     }
 }
