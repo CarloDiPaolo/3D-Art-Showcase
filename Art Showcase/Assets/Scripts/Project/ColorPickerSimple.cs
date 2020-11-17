@@ -11,6 +11,7 @@ public class ColorPickerSimple : Singleton<ColorPickerSimple>
     
     private RectTransform uiTransform;
     private Renderer target;
+    private ParticleSystem particleSystemTarget;
 
     private float r = 1f;
     private float g = 1f;
@@ -18,6 +19,7 @@ public class ColorPickerSimple : Singleton<ColorPickerSimple>
     private float a = 1f;
 
     private Color currentColor;
+    private ParticleSystem.ColorOverLifetimeModule colorModule;
 
 
     private void Start()
@@ -29,6 +31,16 @@ public class ColorPickerSimple : Singleton<ColorPickerSimple>
     public void Open(Vector2 windowPosition, Renderer target)
     {
         this.target = target;
+
+        uiTransform.anchoredPosition = new Vector3(windowPosition.x, windowPosition.y, uiTransform.position.z);
+        DisplayTargetsColor();
+        uiTransform.gameObject.SetActive(true);
+    }
+
+    public void Open(Vector2 windowPosition, ParticleSystem target)
+    {
+        this.target = null;
+        particleSystemTarget = target;
 
         uiTransform.anchoredPosition = new Vector3(windowPosition.x, windowPosition.y, uiTransform.position.z);
         DisplayTargetsColor();
@@ -88,13 +100,41 @@ public class ColorPickerSimple : Singleton<ColorPickerSimple>
 
     private void SetColorToTarget()
     {
-        target.material.color = currentColor;
+        if(target != null)
+        {
+            target.material.color = currentColor;
+        }
+        else
+        {
+            colorModule = particleSystemTarget.colorOverLifetime;
+            Gradient gradient = colorModule.color.gradient;
+            gradient.colorKeys[0] = new GradientColorKey(Color.red, 0f);
+
+            gradient.SetKeys(
+            new GradientColorKey[] { new GradientColorKey(currentColor, 0.0f), gradient.colorKeys[1] },
+            new GradientAlphaKey[] { gradient.alphaKeys[0], gradient.alphaKeys[1] }
+            );
+
+            colorModule.color = new ParticleSystem.MinMaxGradient(gradient);
+        }
     }
 
     private void DisplayTargetsColor()
     {
-        Debug.LogError("Display");
-        Color targetColor = target.material.color;
+        Color targetColor = Color.white;
+
+        if(target != null)
+        {
+            targetColor = target.material.color;
+        }
+        else
+        {
+            colorModule = particleSystemTarget.colorOverLifetime;
+            Gradient gradient = colorModule.color.gradient;
+            targetColor = gradient.colorKeys[0].color;
+            Debug.LogError(targetColor);
+        }
+
         colorDisplay.color = targetColor;
         colorSliders[0].value = targetColor.r;
         colorSliders[1].value = targetColor.g;

@@ -76,4 +76,9 @@ public class ShowcaseMenu : MonoBehaviour
     {
         ColorPickerSimple.Instance.Open(new Vector2(440f, 150f), target);
     }
+
+    public void OpenColorPicker(ParticleSystem target)
+    {
+        ColorPickerSimple.Instance.Open(new Vector2(440f, 150f), target);
+    }
 }
